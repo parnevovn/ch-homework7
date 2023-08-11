@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option csharp_namespace = "Route256.Week5.Homework.PriceCalculator.GrpcClient";
+
+service Calc {
+    rpc CalcPrice (CalcPriceRequest) returns (CalcPriceReply);
+    rpc ClearHistory (ClearHistoryRequest) returns (ClearHistoryReply);
+    rpc GetCalcHistory (GetCalcHistoryRequest) returns (stream GetCalcHistoryReply);
+    rpc CalcPriceStream (stream CalcPriceRequest) returns (stream CalcPriceReply);
+}
+
+message CalcPriceRequest {
+    int64 userId = 1;
+    repeated Good goods = 2;
+}
+
+message Goods {
+    repeated Good goods = 1;
+}
+
+message Good {
+    double length = 1;
+    double width = 2;
+    double height = 3;
+    double weight = 4;
+}
+
+message CalcPriceReply {
+    DecimalValue price = 1;
+}
+
+message ClearHistoryRequest {
+    int64 userId = 1;
+    repeated int64 calculationIds = 2;
+}
+
+message ClearHistoryReply {
+    bool result = 1;
+}
+
+message GetCalcHistoryRequest {
+    int64 userId = 1;
+    int32 take = 2;
+    int32 skip = 3;
+}
+
+message GetCalcHistoryReply {
+    double volume = 1;
+    double weight = 2;
+    DecimalValue price = 3; 
+    repeated int64 goodIds = 4;
+}
+
+message DecimalValue {
+    int64 units = 1;
+    sfixed32 nanos = 2;
+}
